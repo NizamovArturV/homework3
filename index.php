@@ -68,13 +68,6 @@ include 'include/passwords.php';
 							</tr>
 						</table>
                     </form>
-                <?php if (($idUser = array_search($_POST['login_input'],$logins)) !== false) {
-                    if ($passwords[$idUser] === $_POST['password_input']) {
-                        $success = true;
-                    } else {
-                        $error = true;
-                    }
-                } ?>
                 <?php if ($success) {
                     include 'include/success.php';
                 } elseif ($error) {

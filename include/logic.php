@@ -1,12 +1,13 @@
 <?php
+include 'logins.php'; 
+include 'passwords.php'; 
 
-$login = 'artur';
-$password = '12345';
 $success = false;
 $error = false;
 
 if (isset($_POST['login'])) {
-    if ($_POST['login_input'] === $login && $_POST['password_input'] === $password) {
+    $idUser = array_search($_POST['login_input'],$logins);
+    if ($passwords[$idUser] === $_POST['password_input'] && $idUser !== false) {
         $success = true;
     } else {
         $error = true;
