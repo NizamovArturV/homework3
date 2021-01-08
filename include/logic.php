@@ -3,20 +3,13 @@ $sessionLifeTime = 3600 * 24 * 30;
 session_set_cookie_params($sessionLifetime);
 session_start();
 
-
-if (isset($_POST['unAuth'])) {
-    $_SESSION['login'] = 'unAuth';
-    session_destroy();
-    //header ('Location : /');
-    //exit;
-}
-
 include 'logins.php'; 
 include 'passwords.php'; 
 include 'main_menu.php'; 
 $success = false;
 $error = false;
 
+//Установка в куки раннее введеного логина 
 if (isset($_COOKIE['login'])) {
     setcookie('login', $_COOKIE['login'], time() + (3600 * 24 * 30), '/');
 }
@@ -35,8 +28,18 @@ if (isset($_POST['login'])) {
     }
 }
 
+//Выход из аккаунта
+if (isset($_POST['unAuth'])) {
+    session_destroy();
+    header ('Location: /');
+    exit;
+}
 
-
+//Перенаправлять неавторизованных пользователей на главную страницу
+if ($_SERVER['REQUEST_URI'] !== '/' && $_SESSION['login'] !== 'success' && empty($_GET)) {
+    header ('Location: /');
+    exit;
+}
 //Функция обрезки строки, если она больше 15 символов 
 function cutString($line, $length = 12, $appends = '...') : string
 {

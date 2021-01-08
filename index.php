@@ -1,5 +1,4 @@
-<?php header('Location : https://google.com');
-exit ();
+<?php
 include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php';
 ?>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
