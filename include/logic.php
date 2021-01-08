@@ -1,19 +1,41 @@
 <?php
+$sessionLifeTime = 3600 * 24 * 30;
+session_set_cookie_params($sessionLifetime);
+session_start();
+
+
+if (isset($_POST['unAuth'])) {
+    $_SESSION['login'] = 'unAuth';
+    session_destroy();
+    //header ('Location : /');
+    //exit;
+}
+
 include 'logins.php'; 
 include 'passwords.php'; 
 include 'main_menu.php'; 
 $success = false;
 $error = false;
 
+if (isset($_COOKIE['login'])) {
+    setcookie('login', $_COOKIE['login'], time() + (3600 * 24 * 30), '/');
+}
+
 //Проверка логина и пароля 
 if (isset($_POST['login'])) {
-    $idUser = array_search($_POST['login_input'],$logins);
+    $loginUser = (isset($_COOKIE['login'])) ? $_COOKIE['login'] : $_POST['login_input'];
+    $idUser = array_search($loginUser,$logins);
+    
     if ($passwords[$idUser] === $_POST['password_input'] && $idUser !== false) {
         $success = true;
+        $_SESSION['login'] = 'success';
+        setcookie('login', $loginUser, time() + (3600 * 24 * 30), '/');
     } else {
         $error = true;
     }
 }
+
+
 
 //Функция обрезки строки, если она больше 15 символов 
 function cutString($line, $length = 12, $appends = '...') : string

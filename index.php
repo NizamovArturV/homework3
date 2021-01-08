@@ -1,4 +1,6 @@
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php';
+<?php header('Location : https://google.com');
+exit ();
+include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php';
 ?>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
     	<tr>
@@ -21,15 +23,21 @@
 				</div>
                 
 				<div class="index-auth">
-                <?php if (isset($_GET['login']) && $_GET['login'] == 'yes'): ?>
+				<?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'success') : ?>
+					<form action = "<?= $_SERVER['PHP_SELF'] ?>" method = "post">
+						<input type="submit" value="Выйти" name="unAuth">
+					</form>
+				<?php elseif (isset($_GET['login']) && $_GET['login'] == 'yes'): ?>
                     <form action="/index.php?login=yes" method="post">
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<?php if (!isset($_COOKIE['login'])) : ?>
 							<tr>
 								<td class="iat">
                                     <label for="login_id">Ваш e-mail:</label>
                                     <input id="login_id" size="30" name="login_input" value="<?php $_POST['login_input'] ?? ''?>">
                                 </td>
 							</tr>
+							<?php endif ?>
 							<tr>
 								<td class="iat">
                                     <label for="password_id">Ваш пароль:</label>
