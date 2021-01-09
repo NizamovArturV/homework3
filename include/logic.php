@@ -1,6 +1,6 @@
 <?php
 $sessionLifeTime = 3600 * 24 * 30;
-session_set_cookie_params($sessionLifetime);
+session_set_cookie_params($sessionLifeTime);
 session_start();
 
 include 'logins.php'; 
@@ -32,21 +32,18 @@ if (isset($_POST['login'])) {
 if (isset($_POST['unAuth'])) {
     session_destroy();
     header ('Location: /');
-    exit;
+    exit();
 }
 
 //Перенаправлять неавторизованных пользователей на главную страницу
 if ($_SERVER['REQUEST_URI'] !== '/' && $_SESSION['login'] !== 'success' && empty($_GET)) {
     header ('Location: /');
-    exit;
+    exit();
 }
 //Функция обрезки строки, если она больше 15 символов 
 function cutString($line, $length = 12, $appends = '...') : string
 {
-    if (strlen($line) > 15) {
-        $line = mb_substr($line,0,$length) . $appends;
-    }
-    return $line;
+    return (strlen($line) > 15) ? mb_substr($line,0,$length) . $appends : $line;
 }
 
 //Фукнция сортировки массива по ключу sort
