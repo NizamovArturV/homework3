@@ -20,6 +20,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/include/passwords.php';
     <div class="clear">
         <ul class="main-menu">
             <?=showMenu($mainMenu) ?>
+            <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'success') : ?>
+            <li><a href="/profile.php">Профиль</a></li>
+            <?php endif; ?>
         </ul>
     </div>
     

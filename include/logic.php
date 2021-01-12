@@ -5,7 +5,7 @@ session_start();
 
 include 'logins.php'; 
 include 'passwords.php'; 
-include 'main_menu.php'; 
+include 'main_menu.php';
 $success = false;
 $error = false;
 
@@ -14,18 +14,27 @@ if (isset($_COOKIE['login'])) {
     setcookie('login', $_COOKIE['login'], time() + (3600 * 24 * 30), '/');
 }
 
-//Проверка логина и пароля 
+//Проверка логина и пароля
 if (isset($_POST['login'])) {
     $loginUser = (isset($_COOKIE['login'])) ? $_COOKIE['login'] : $_POST['login_input'];
-    $idUser = array_search($loginUser,$logins);
-    
-    if ($passwords[$idUser] === $_POST['password_input'] && $idUser !== false) {
+    $passwordUser = $_POST['password_input'];
+    include $_SERVER['DOCUMENT_ROOT'] . '/query/configuration.php';
+    $query = mysqli_query($connect,
+//        "SELECT * FROM users WHERE email= '$loginUser' AND password='$passwordUser'");
+"SELECT users.*, g.name as group_name, g.description as group_description FROM users
+        Left Join group_user gu on users.id = gu.user_id
+        left join groups g on gu.group_id = g.id
+        where users.email = '$loginUser' and users.password = '$passwordUser'");
+    $result = mysqli_fetch_assoc($query);
+    if (!empty($result)) {
         $success = true;
         $_SESSION['login'] = 'success';
         setcookie('login', $loginUser, time() + (3600 * 24 * 30), '/');
+        $_SESSION['user_info'] = $result;
     } else {
         $error = true;
     }
+    mysqli_close($connect);
 }
 
 //Выход из аккаунта
