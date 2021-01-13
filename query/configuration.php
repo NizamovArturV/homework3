@@ -1,10 +1,10 @@
 <?php
-$dbhost = 'localhost';
-$dbuser = 'root';
-$dbpassword = 'root';
-$dbname = 'task_db';
+$dbHost = 'localhost';
+$dbUser = 'root';
+$dbPassword = 'root';
+$dbName = 'task_db';
 
-$connect = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname);
+$connect = mysqli_connect($dbHost, $dbUser, $dbPassword, $dbName);
 
 if (mysqli_connect_errno()) {
     die ('Не удалось подключится к базе данных' . mysqli_connect_error());
