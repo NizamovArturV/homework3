@@ -1,9 +1,9 @@
 <?php
 include 'configuration.php';
-
+$connect = getConnection();
 //Создаем таблицу данных с цветами для разделов
 $query = mysqli_query($connect,
-    "CREATE TABLE IF NOT EXISTS message_sections (
+    "CREATE TABLE IF NOT EXISTS sections (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     color_id INT,

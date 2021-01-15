@@ -1,6 +1,6 @@
 <?php
 include 'configuration.php';
-
+$connect = getConnection();
 //Создаем таблицу данных с сообщениями
 $query = mysqli_query($connect,
     "CREATE TABLE IF NOT EXISTS messages (

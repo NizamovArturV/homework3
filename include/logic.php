@@ -15,26 +15,44 @@ if (isset($_COOKIE['login'])) {
     setcookie('login', $_COOKIE['login'], time() + (3600 * 24 * 30), '/');
 }
 
-//Проверка логина и пароля
-function authorization($loginUser, $passwordUser)
+//Получение информации о пользователе по логину
+function getUserByLogin($loginUser)
 {
     $loginUser = (isset($_COOKIE['login'])) ? $_COOKIE['login'] : $loginUser;
-    global $connect;
-    $query = mysqli_query($connect,
-        "SELECT users.*, g.name as group_name, g.description as group_description FROM users
-        Left Join group_user gu on users.id = gu.user_id
-        left join groups g on gu.group_id = g.id
-        where users.email = '$loginUser' and users.password = '$passwordUser'");
-    return $result = mysqli_fetch_assoc($query);
+    $connect = getConnection();
+    $queryUserInfo = mysqli_query($connect,
+        "SELECT * FROM users where users.email = '$loginUser'");
+    $result = mysqli_fetch_assoc($queryUserInfo);
+    return $result;
 }
 
+//Получение информации о группах пользователя по логину
+function getUserGroupsInfo($loginUser)
+{
+    $loginUser = (isset($_COOKIE['login'])) ? $_COOKIE['login'] : $loginUser;
+    $connect = getConnection();
+    $queryGroupsInfo = mysqli_query($connect,
+        "SELECT g.name as group_name, g.description as group_description FROM users
+            Left Join group_user gu on users.id = gu.user_id
+            left join groups g on gu.group_id = g.id
+            where users.email = '$loginUser'");
+    while ($row = mysqli_fetch_assoc($queryGroupsInfo)) {
+        $result['groups_info'][] = $row;
+    }
+    return $result;
+}
+
+//Проверка логина и пароля
 if (isset($_POST['login'])) {
-    $userInfo = authorization($_POST['login_input'], $_POST['password_input']);
-    if (!empty($userInfo)) {
+    $userInfo = getUserByLogin($_POST['login_input']);
+    $groupInfo = getUserGroupsInfo($_POST['login_input']);
+    $passwordHash = $userInfo['password'];
+    $passwordUser = $_POST['password_input'];
+    if (!empty($userInfo) && password_verify($passwordUser, $passwordHash) === true) {
         $success = true;
         $_SESSION['login'] = 'success';
         setcookie('login', $userInfo['email'], time() + (3600 * 24 * 30), '/');
-        $_SESSION['user_info'] = $userInfo;
+        $_SESSION['user_info'] = $userInfo + $groupInfo;
     } else {
         $error = true;
     }
@@ -86,4 +104,3 @@ function showMenu($menu, $sortType = SORT_ASC)
     }
 }
 
-mysqli_close($connect);

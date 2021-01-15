@@ -1,6 +1,6 @@
 <?php
 include 'configuration.php';
-
+$connect = getConnection();
 //Создаем таблицу данных со связями групп и пользователей
 $query = mysqli_query($connect,
     "CREATE TABLE IF NOT EXISTS group_user (

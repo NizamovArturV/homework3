@@ -1,6 +1,6 @@
 <?php
 include 'configuration.php';
-
+$connect = getConnection();
 //Создаем таблицу данных с пользователями
 $query = mysqli_query($connect,
     "CREATE TABLE IF NOT EXISTS users (
@@ -9,8 +9,8 @@ $query = mysqli_query($connect,
     email VARCHAR(255) NOT NULL,
     phone VARCHAR (255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    active INT NOT NULL DEFAULT 1,
-    email_notifications INT NOT NULL DEFAULT 0,
+    active TINYINT NOT NULL DEFAULT 1,
+    email_notifications TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     UNIQUE INDEX EMAIL_UNIQUE (email),
     UNIQUE INDEX TELEPHONE_UNIQUE (phone)

@@ -12,8 +12,12 @@
                 <p>Фио: <?= $_SESSION['user_info']['name'] ?></p>
                 <p>Email: <?= $_SESSION['user_info']['email'] ?></p>
                 <p>Телефон: <?= $_SESSION['user_info']['phone'] ?></p>
-                <p>Группа: <?= $_SESSION['user_info']['group_name'] ?></p>
-                <p>Описание группы: <?= $_SESSION['user_info']['group_description'] ?></p>
+                <p>Группы пользователя:</p>
+                <?php foreach ($_SESSION['user_info']['groups_info'] as $group): ?>
+                <ul>
+                    <li>Навание группы: <?= $group['group_name'] ?> Описание группы: <?=$group['group_description']?></li>
+                </ul>
+                <?php endforeach; ?>
             </td>
         </tr>
     </table>
