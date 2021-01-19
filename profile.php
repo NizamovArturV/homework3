@@ -1,10 +1,5 @@
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php'; ?>
 
-<?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'success') : ?>
-    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
-        <input type="submit" value="Выйти" name="unAuth">
-    </form>
-<?php endif; ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="left-collum-index">

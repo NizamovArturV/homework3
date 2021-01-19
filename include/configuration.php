@@ -1,5 +1,5 @@
 <?php
-
+//Функция получения соединения с БД
 function getConnection()
 {
     static $connect;

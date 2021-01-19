@@ -21,19 +21,15 @@
                 </div>
 
                 <div class="index-auth">
-                    <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'success'): ?>
-                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
-                            <input type="submit" value="Выйти" name="unAuth">
-                        </form>
-                    <?php elseif (isset($_GET['login']) && $_GET['login'] === 'yes'): ?>
-                        <form action="<?= $_SERVER['PHP_SELF'] ?>?login=yes" method="post">
+                    <?php if (isAuth() !== true && isset($_GET['login']) && $_GET['login'] === 'yes'): ?>
+                        <form action="?login=yes" method="post">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <?php if (!isset($_COOKIE['login'])): ?>
                                     <tr>
                                         <td class="iat">
                                             <label for="login_id">Ваш e-mail:</label>
                                             <input id="login_id" size="30" name="login_input"
-                                                   value="<?php htmlspecialchars($_POST['login_input']) ?? '' ?>">
+                                                   value="<?php (isset($_POST['login_input'])) ? htmlspecialchars($_POST['login_input']) : '' ?>">
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -41,7 +37,7 @@
                                     <td class="iat">
                                         <label for="password_id">Ваш пароль:</label>
                                         <input id="password_id" size="30" name="password_input" type="password"
-                                               value="<?php htmlspecialchars($_POST['password_input']) ?? '' ?>">
+                                               value="<?php (isset($_POST['password_input'])) ? htmlspecialchars($_POST['password_input']) : '' ?>">
                                     </td>
                                 </tr>
                                 <tr>
